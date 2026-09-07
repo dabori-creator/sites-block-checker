@@ -20,6 +20,8 @@ class SiteChecker:
         self.texts = {}
         self.user_ip = None
         self.user_country = None
+        self.user_city = None
+        self.user_is = None
         self.ip_checked = False
         self.concurrent_checks = 5
         self.timeout = 4.0
@@ -29,11 +31,12 @@ class SiteChecker:
         self.stats_container = None
         self.sites_container = None
 
+
         self.load_config()
         
     def load_config(self):
         # Загрузка списка сайтов и текстов из YAML
-        with open("config.yaml", "r", encoding="utf-8") as f:
+        with open("config.yml", "r", encoding="utf-8") as f:
             config = yaml.safe_load(f)
             self.sites = config.get("sites", [])
             self.translations = config.get("texts", {})
@@ -50,7 +53,10 @@ class SiteChecker:
                     if data['status'] == 'success':
                         self.user_ip = data['query']
                         self.user_country = data['country']
+                        self.user_city = data['city']
+                        self.user_is = data['as']
                         self.ip_checked = True
+                        # print (data)
                         return True
         except:
             self.user_ip = "Не удалось определить"
@@ -84,7 +90,7 @@ class SiteChecker:
         }
         
         try:
-            # DNS check
+            # DNS checking
             try:
                 loop = asyncio.get_event_loop()
                 ip = await loop.getaddrinfo(domain, 443, proto=socket.IPPROTO_TCP)
@@ -99,11 +105,12 @@ class SiteChecker:
                     result["block_type"] = "DNS Poisoning"
                     return result
             except:
+                print("Error DNS")
                 result["status"] = "blocked"
                 result["block_type"] = "DNS Poisoning"
                 return result
             
-            # Проверка соединения через HTTP
+            # HTTP checking
             try:
                 connector = aiohttp.TCPConnector()
                 async with aiohttp.ClientSession(connector=connector) as session:
@@ -114,9 +121,9 @@ class SiteChecker:
                                 result["block_type"] = "OK"
                             else:
                                 result["status"] = "OK"
-                                result["block_type"] = "HTTP Error"
+                                result["block_type"] = "HTTP STUB"
                     except asyncio.TimeoutError:
-                        # Проверка через ping
+                        # Additional check using ping
                         try:
                             # ping 4 packets 4 sec timeout
                             process = await asyncio.create_subprocess_exec(
@@ -132,6 +139,7 @@ class SiteChecker:
                                 result["status"] = "blocked"
                                 result["block_type"] = "IP Block"
                         except:
+                            print("Ошибка IP")
                             result["status"] = "blocked"
                             result["block_type"] = "IP Block"
             except aiohttp.ClientError as e:
@@ -141,7 +149,7 @@ class SiteChecker:
                 else:
                     print(str(e))
                     result["status"] = "blocked"
-                    result["block_type"] = "DPI Filtering"
+                    result["block_type"] = "Unknown Error"
             
             return result
             
@@ -153,14 +161,13 @@ class SiteChecker:
 
     
     async def check_all_sites(self, progress_callback=None):
-        """Проверка всех сайтов с параллельной обработкой"""
         self.results = {}
         self.logs = []
         
         total = len(self.sites)
         checked = 0
         
-        # Разбиваем на группы для параллельной проверки
+        # Divide into groups for parallel checking
         for i in range(0, len(self.sites), self.concurrent_checks):
             batch = self.sites[i:i+self.concurrent_checks]
             tasks = [self.check_site(site) for site in batch]
@@ -169,13 +176,11 @@ class SiteChecker:
             for site, result in zip(batch, results):
                 self.results[site["d"]] = result
                 self.logs.append(f"{site['name']} ({site['d']}): {result['block_type']}")
-                # if result['status'] == 'blocked':
-                #     self.logs.append(f"  Тип блокировки: {result['block_type']}")
                 
                 checked += 1
                 if progress_callback:
                     progress_callback(checked / total)
-                    # Обновляем лог после каждой проверки
+                    # Update the log after each check
                     if self.page:
                         self.update_log()
                         self.update_stats()
@@ -184,18 +189,18 @@ class SiteChecker:
         return self.results
     
     def get_stats(self):
-        # Получение статистики по проверенным сайтам
+        # Obtaining statistics for checked sites
         if not self.results:
-            return {"total": 0, "OK": 0, "http_error": 0, "ssl_error": 0, "dns_filter": 0, "ip_block": 0, "dpi_filter": 0, "ru_available": 0, "ru_total": 0, "foreign_available": 0, "foreign_total": 0}
+            return {"total": 0, "OK": 0, "http_error": 0, "ssl_error": 0, "dns_filter": 0, "ip_block": 0, "unknown_error": 0, "ru_available": 0, "ru_total": 0, "foreign_available": 0, "foreign_total": 0}
         
         total = len(self.results)
 
         OK = sum(1 for r in self.results.values() if r["status"] == "OK")
-        http_error = sum(1 for r in self.results.values() if r["block_type"] == "HTTP Error")
+        http_error = sum(1 for r in self.results.values() if r["block_type"] == "HTTP STUB")
         ssl_error = sum(1 for r in self.results.values() if r["block_type"] == "SSL Error")
         dns_filter = sum(1 for r in self.results.values() if r["block_type"] == "DNS Poisoning")
         ip_block = sum(1 for r in self.results.values() if r["block_type"] == "IP Block")
-        dpi_filter = sum(1 for r in self.results.values() if r["block_type"] == "DPI Filtering")
+        unknown_error = sum(1 for r in self.results.values() if r["block_type"] == "Unknown Error")
 
         
         ru_total = sum(1 for r in self.results.values() if r.get("is_ru", False))
@@ -211,7 +216,7 @@ class SiteChecker:
             "ssl_error": ssl_error,
             "dns_filter" : dns_filter,
             "ip_block": ip_block,
-            "dpi_filter": dpi_filter,
+            "unknown_error": unknown_error,
             "ru_total": ru_total,
             "ru_available": ru_available,
             "foreign_total": foreign_total,
@@ -219,7 +224,6 @@ class SiteChecker:
         }
    
     def update_stats(self):
-        """Обновление статистики"""
         if not self.stats_container:
             return
 
@@ -247,7 +251,7 @@ class SiteChecker:
         self.blocks_container.controls.append(
             ft.Container(
                 content=ft.Column([
-                    ft.Text(f"{stats['OK']}", size=28, weight=ft.FontWeight.BOLD, color="#22C55E"),
+                    ft.Text(f"{stats['OK']}", size=28, weight=ft.FontWeight.BOLD, color=ft.Colors.GREEN_600),
                     ft.Text("OK", size=14, weight=ft.FontWeight.BOLD, color=ft.Colors.GREY_200)
                 ], horizontal_alignment=ft.CrossAxisAlignment.CENTER),
                 bgcolor=ft.Colors.GREY_900,
@@ -261,8 +265,8 @@ class SiteChecker:
         self.blocks_container.controls.append(
             ft.Container(
                 content=ft.Column([
-                    ft.Text(f"{stats['http_error']}", size=28, weight=ft.FontWeight.BOLD, color=ft.Colors.PINK_400),
-                    ft.Text("HTTP Error", size=14, weight=ft.FontWeight.BOLD, color=ft.Colors.GREY_200)
+                    ft.Text(f"{stats['http_error']}", size=28, weight=ft.FontWeight.BOLD, color=ft.Colors.PINK_600),
+                    ft.Text("HTTP STUB", size=14, weight=ft.FontWeight.BOLD, color=ft.Colors.GREY_200)
                 ], horizontal_alignment=ft.CrossAxisAlignment.CENTER),
                 bgcolor=ft.Colors.GREY_900,
                 border_radius=10,
@@ -275,7 +279,7 @@ class SiteChecker:
         self.blocks_container.controls.append(
             ft.Container(
                 content=ft.Column([
-                    ft.Text(f"{stats['ssl_error']}", size=28, weight=ft.FontWeight.BOLD, color=ft.Colors.CYAN_400),
+                    ft.Text(f"{stats['ssl_error']}", size=28, weight=ft.FontWeight.BOLD, color=ft.Colors.CYAN_600),
                     ft.Text("SSL Error", size=14, weight=ft.FontWeight.BOLD, color=ft.Colors.GREY_200)
                 ], horizontal_alignment=ft.CrossAxisAlignment.CENTER),
                 bgcolor=ft.Colors.GREY_900,
@@ -302,7 +306,7 @@ class SiteChecker:
         self.blocks_container.controls.append(
             ft.Container(
                 content=ft.Column([
-                    ft.Text(f"{stats['ip_block']}", size=28, weight=ft.FontWeight.BOLD, color=ft.Colors.RED_400),
+                    ft.Text(f"{stats['ip_block']}", size=28, weight=ft.FontWeight.BOLD, color=ft.Colors.RED_600),
                     ft.Text("IP Block", size=14, weight=ft.FontWeight.BOLD, color=ft.Colors.GREY_200)
                 ], horizontal_alignment=ft.CrossAxisAlignment.CENTER),
                 bgcolor=ft.Colors.GREY_900,
@@ -315,8 +319,8 @@ class SiteChecker:
         self.blocks_container.controls.append(
             ft.Container(
                 content=ft.Column([
-                    ft.Text(f"{stats['dpi_filter']}", size=28, weight=ft.FontWeight.BOLD, color=ft.Colors.ORANGE_ACCENT_400),
-                    ft.Text("DPI Filtering", size=14, weight=ft.FontWeight.BOLD, color=ft.Colors.GREY_200)
+                    ft.Text(f"{stats['unknown_error']}", size=28, weight=ft.FontWeight.BOLD, color=ft.Colors.ORANGE_ACCENT_400),
+                    ft.Text("Unknown Error", size=14, weight=ft.FontWeight.BOLD, color=ft.Colors.GREY_200)
                 ], horizontal_alignment=ft.CrossAxisAlignment.CENTER),
                 bgcolor=ft.Colors.GREY_900,
                 border_radius=10,
@@ -332,9 +336,9 @@ class SiteChecker:
                 content=ft.Column([
                     ft.Text("Все сайты", size=14, weight=ft.FontWeight.BOLD),
                     ft.Text(f"{stats['OK']}/{stats['total']}", size=16),
-                    ft.Text(f"{total_pct:.1f}%", size=20, color=ft.Colors.GREEN_400 if total_pct > 50 else (ft.Colors.ORANGE_400 if (total_pct < 50 and total_pct > 15) else ft.Colors.RED_400))
+                    ft.Text(f"{total_pct:.1f}%", size=20, color=ft.Colors.GREEN_600 if total_pct > 50 else (ft.Colors.ORANGE_600 if (total_pct < 50 and total_pct > 15) else ft.Colors.RED_600))
                 ], horizontal_alignment=ft.CrossAxisAlignment.CENTER),
-                bgcolor=ft.Colors.GREY_800,
+                bgcolor=ft.Colors.GREY_900,
                 border_radius=10,
                 padding=20,
                 width=150
@@ -342,38 +346,36 @@ class SiteChecker:
         )
         
         # .ru сайты
-        if stats["ru_total"] > 0:
-            ru_pct = (stats["ru_available"] / stats["ru_total"] * 100) if stats["ru_total"] > 0 else 0
-            self.stats_container.controls.append(
-                ft.Container(
-                    content=ft.Column([
-                        ft.Text("Сайты .ru", size=14, weight=ft.FontWeight.BOLD),
-                        ft.Text(f"{stats['ru_available']}/{stats['ru_total']}", size=16),
-                        ft.Text(f"{ru_pct:.1f}%", size=20, color=ft.Colors.GREEN_400 if ru_pct > 50 else (ft.Colors.ORANGE_400 if (ru_pct < 50 and ru_pct > 15) else ft.Colors.RED_400))
-                    ], horizontal_alignment=ft.CrossAxisAlignment.CENTER),
-                    bgcolor=ft.Colors.GREY_800,
-                    border_radius=10,
-                    padding=20,
-                    width=150
-                )
+        ru_pct = (stats["ru_available"] / stats["ru_total"] * 100) if stats["ru_total"] > 0 else 0
+        self.stats_container.controls.append(
+            ft.Container(
+                content=ft.Column([
+                    ft.Text("Сайты .ru", size=14, weight=ft.FontWeight.BOLD),
+                    ft.Text(f"{stats['ru_available']}/{stats['ru_total']}", size=16),
+                    ft.Text(f"{ru_pct:.1f}%", size=20, color=ft.Colors.GREEN_400 if ru_pct > 50 else (ft.Colors.ORANGE_400 if (ru_pct < 50 and ru_pct > 15) else ft.Colors.RED_400))
+                ], horizontal_alignment=ft.CrossAxisAlignment.CENTER),
+                bgcolor=ft.Colors.GREY_900,
+                border_radius=10,
+                padding=20,
+                width=150
             )
+        )
         
         # Зарубежные сайты
-        if stats["foreign_total"] > 0:
-            foreign_pct = (stats["foreign_available"] / stats["foreign_total"] * 100) if stats["foreign_total"] > 0 else 0
-            self.stats_container.controls.append(
-                ft.Container(
-                    content=ft.Column([
-                        ft.Text("Зарубежные", size=14, weight=ft.FontWeight.BOLD),
-                        ft.Text(f"{stats['foreign_available']}/{stats['foreign_total']}", size=16),
-                        ft.Text(f"{foreign_pct:.1f}%", size=20, color=ft.Colors.GREEN_400 if foreign_pct > 50 else (ft.Colors.ORANGE_400 if (foreign_pct < 50 and foreign_pct > 15) else ft.Colors.RED_400))
-                    ], horizontal_alignment=ft.CrossAxisAlignment.CENTER),
-                    bgcolor=ft.Colors.GREY_800,
-                    border_radius=10,
-                    padding=20,
-                    width=150
-                )
+        foreign_pct = (stats["foreign_available"] / stats["foreign_total"] * 100) if stats["foreign_total"] > 0 else 0
+        self.stats_container.controls.append(
+            ft.Container(
+                content=ft.Column([
+                    ft.Text("Зарубежные", size=14, weight=ft.FontWeight.BOLD),
+                    ft.Text(f"{stats['foreign_available']}/{stats['foreign_total']}", size=16),
+                    ft.Text(f"{foreign_pct:.1f}%", size=20, color=ft.Colors.GREEN_400 if foreign_pct > 50 else (ft.Colors.ORANGE_400 if (foreign_pct < 50 and foreign_pct > 15) else ft.Colors.RED_400))
+                ], horizontal_alignment=ft.CrossAxisAlignment.CENTER),
+                bgcolor=ft.Colors.GREY_900,
+                border_radius=10,
+                padding=20,
+                width=150
             )
+        )
         
         if self.page:
             self.page.update()
@@ -389,7 +391,6 @@ class SiteChecker:
                 self.page.update()
     
     def update_site_cards(self):
-        """Обновление карточек сайтов"""
         if not self.sites_container:
             return
             
@@ -408,17 +409,17 @@ class SiteChecker:
             status_text = "✓ OK" if (result["status"] == "OK" and result["status"] == None) else f"✗ {result['block_type']}"
             match result['block_type']:
                 case "OK":
-                    status_color = ft.color="#22C55E"
-                case "HTTP Error":
+                    status_color = ft.Colors.GREEN_600
+                case "HTTP STUB":
                     status_color = ft.Colors.PINK_600
                 case "SSL Error":
                     status_color = ft.Colors.CYAN_600
                 case "DNS Poisoning":
-                    status_color = ft.Colors.PURPLE_600
+                    status_color = ft.Colors.PURPLE_ACCENT_400
                 case "IP Block":
-                    status_color = ft.color="#EF4444"
-                case "DPI Filtering":
-                    status_color = ft.Colors.ORANGE_400
+                    status_color = ft.Colors.RED_600
+                case "Unknown Error":
+                    status_color = ft.Colors.ORANGE_ACCENT_400
                 case _:
                     status_color = ft.Colors.ORANGE_400
             
@@ -445,21 +446,16 @@ class SiteChecker:
 
     def main(self, page: ft.Page):
         self.page = page
-        page.title = self.t('title')
-        page.theme_mode = ft.ThemeMode.DARK
-        page.padding = 10
-        page.scroll = ft.ScrollMode.AUTO
-        page.min_width=1200
-
-        # config_dialog = ft.AlertDialog(
-        #     title=ft.Text("Error"),
-        #     content=ft.Text("No such file: 'config.yaml'."),
-        #     actions=[ft.TextButton("Ok", on_click=lambda e: exit())],
-        #     open=True,
-        # )
+        self.page.title = self.t('title')
+        self.page.theme_mode = ft.ThemeMode.DARK
+        self.page.padding = 10
+        self.page.scroll = ft.ScrollMode.AUTO
+        # self.page.min_width=1580
+        ft.Window.width = 1380
+        ft.Window.resizable = False
 
         try:
-            with open("config.yaml", "r", encoding="utf-8") as f:
+            with open("config.yml", "r", encoding="utf-8") as f:
                 pass
         except FileNotFoundError:
             # page.show_dialog(config_dialog)
@@ -468,6 +464,8 @@ class SiteChecker:
         
         # Элементы интерфейса
         ip_status = ft.Text("", size=14)
+        is_status = ft.Text("", size=14)
+        location_status = ft.Text("", size=14)
         ip_check_btn = ft.Button(
             content=ft.Text("Проверить IP"),
             style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=2), alignment=ft.Alignment.CENTER),
@@ -512,6 +510,7 @@ class SiteChecker:
         # Лог с поиском
         search_field = ft.TextField(
             hint_text="Поиск...",
+            border=ft.Border.all(1, ft.Colors.GREY_400),
             width=1200,
             expand=True,
             on_change=lambda e: self.update_log()
@@ -570,11 +569,19 @@ class SiteChecker:
             
             if warnings:
                 ip_status.value = f"IP: {self.user_ip}"
+                is_status.value = f"IS: {self.user_is}"
+                location_status.value = f"Country: {self.user_country}"
                 # ip_status.value = f"IP: {self.user_ip} | {', '.join(warnings)}"
                 ip_status.color = ft.Colors.ORANGE_400
+                is_status.color = ft.Colors.ORANGE_400
+                location_status.color = ft.Colors.ORANGE_400
             else:
-                ip_status.value = f"IP: {self.user_ip} ({self.user_country})"
+                ip_status.value = f"IP: {self.user_ip}"
+                is_status.value = f"IS: {self.user_is}"
+                location_status.value = f"Country: {self.user_country}"
                 ip_status.color = ft.Colors.GREEN_400
+                is_status.color = ft.Colors.GREEN_400
+                location_status.color = ft.Colors.GREEN_400
             
             page.update()
         
@@ -626,14 +633,24 @@ class SiteChecker:
                     ip_check_btn,
                 ], alignment=ft.MainAxisAlignment.START),
                 ft.Row([
-                    ip_status
+                    ft.Column([
+                        ft.Row([
+                            ip_status
+                        ], spacing=5, expand=True),
+                        ft.Row([
+                            is_status
+                        ], spacing=5, expand=True),
+                        ft.Row([
+                            location_status
+                        ], spacing=5, expand=True)
+                    ], alignment=ft.MainAxisAlignment.CENTER),
                 ], alignment=ft.MainAxisAlignment.CENTER),
                 # ft.Row([
                 #     lang_change
                 # ], alignment=ft.MainAxisAlignment.END),
             ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
             
-            ft.Divider(height=5),
+            ft.Divider(height=3),
             
             # Кнопка запуска и прогресс
             ft.Row([
@@ -650,7 +667,6 @@ class SiteChecker:
                 ], alignment=ft.MainAxisAlignment.CENTER, expand=True),
             ], alignment=ft.MainAxisAlignment.CENTER, expand=True),
             
-            ft.Divider(height=3),
             
             # Статистика
             ft.Row([blocks_container,

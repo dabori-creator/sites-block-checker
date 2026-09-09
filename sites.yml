@@ -1,0 +1,625 @@
+sites:
+- d: twitter.com
+  flag: 🇺🇸
+  name: X / Twitter
+- d: facebook.com
+  flag: 🇺🇸
+  name: Facebook
+- d: instagram.com
+  flag: 🇺🇸
+  name: Instagram
+- d: tiktok.com
+  flag: 🇨🇳
+  name: TikTok
+- d: linkedin.com
+  flag: 🇺🇸
+  name: LinkedIn
+- d: reddit.com
+  flag: 🇺🇸
+  name: Reddit
+- d: t.me
+  flag: 🇬🇧
+  name: Telegram
+- d: telegram.org
+  flag: 🇬🇧
+  name: Telegram Web
+- d: snapchat.com
+  flag: 🇺🇸
+  name: Snapchat
+- d: pinterest.com
+  flag: 🇺🇸
+  name: Pinterest
+- d: threads.net
+  flag: 🇺🇸
+  name: Threads
+- d: mastodon.social
+  flag: 🇩🇪
+  name: Mastodon
+- d: vk.com
+  flag: 🇷🇺
+  name: ВКонтакте
+- d: ok.ru
+  flag: 🇷🇺
+  name: Одноклассники
+- d: dzen.ru
+  flag: 🇷🇺
+  name: Дзен
+- d: pikabu.ru
+  flag: 🇷🇺
+  name: Pikabu
+- d: livejournal.com
+  flag: 🇷🇺
+  name: LiveJournal
+- d: rutube.ru
+  flag: 🇷🇺
+  name: RuTube
+- d: tinder.com
+  flag: 🇺🇸
+  name: Tinder
+- d: bumble.com
+  flag: 🇺🇸
+  name: Bumble
+- d: grindr.com
+  flag: 🇺🇸
+  name: Grindr
+- d: pure.app
+  flag: 🇺🇸
+  name: Pure
+- d: badoo.com
+  flag: 🇷🇺
+  name: Badoo
+- d: mamba.ru
+  flag: 🇷🇺
+  name: Mamba
+- d: loveplanet.ru
+  flag: 🇷🇺
+  name: LovePlanet
+- d: okcupid.com
+  flag: 🇺🇸
+  name: OkCupid
+- d: twinby.com
+  flag: 🇷🇺
+  name: Twinby
+- d: mini.ya.ru
+  flag: 🇷🇺
+  name: Мини Яндекс
+- d: youtube.com
+  flag: 🇺🇸
+  name: YouTube
+- d: netflix.com
+  flag: 🇺🇸
+  name: Netflix
+- d: max.com
+  flag: 🇺🇸
+  name: Max (HBO)
+- d: disneyplus.com
+  flag: 🇺🇸
+  name: Disney+
+- d: primevideo.com
+  flag: 🇺🇸
+  name: Prime Video
+- d: twitch.tv
+  flag: 🇺🇸
+  name: Twitch
+- d: vimeo.com
+  flag: 🇺🇸
+  name: Vimeo
+- d: dailymotion.com
+  flag: 🇫🇷
+  name: Dailymotion
+- d: vkvideo.ru
+  flag: 🇷🇺
+  name: VK Видео
+- d: ivi.ru
+  flag: 🇷🇺
+  name: ivi
+- d: okko.tv
+  flag: 🇷🇺
+  name: Okko
+- d: kinopoisk.ru
+  flag: 🇷🇺
+  name: Кинопоиск
+- d: nytimes.com
+  flag: 🇺🇸
+  name: NY Times
+- d: cnn.com
+  flag: 🇺🇸
+  name: CNN
+- d: cbsnews.com
+  flag: 🇺🇸
+  name: CBS News
+- d: bbc.com
+  flag: 🇬🇧
+  name: BBC
+- d: theguardian.com
+  flag: 🇬🇧
+  name: The Guardian
+- d: reuters.com
+  flag: 🇬🇧
+  name: Reuters
+- d: dw.com
+  flag: 🇩🇪
+  name: Deutsche Welle
+- d: france24.com
+  flag: 🇫🇷
+  name: France 24
+- d: lemonde.fr
+  flag: 🇫🇷
+  name: Le Monde
+- d: abc.net.au
+  flag: 🇦🇺
+  name: ABC Australia
+- d: sbs.com.au
+  flag: 🇦🇺
+  name: SBS Australia
+- d: timesofindia.indiatimes.com
+  flag: 🇮🇳
+  name: Times of India
+- d: ndtv.com
+  flag: 🇮🇳
+  name: NDTV
+- d: scmp.com
+  flag: 🇭🇰
+  name: SCMP
+- d: www.nhk.or.jp
+  flag: 🇯🇵
+  name: NHK
+- d: aljazeera.com
+  flag: 🇶🇦
+  name: Al Jazeera
+- d: rt.com
+  flag: 🇷🇺
+  name: RT
+- d: tass.ru
+  flag: 🇷🇺
+  name: ТАСС
+- d: ria.ru
+  flag: 🇷🇺
+  name: РИА Новости
+- d: interfax.ru
+  flag: 🇷🇺
+  name: Интерфакс
+- d: kommersant.ru
+  flag: 🇷🇺
+  name: Коммерсантъ
+- d: lenta.ru
+  flag: 🇷🇺
+  name: Лента.ру
+- d: rbc.ru
+  flag: 🇷🇺
+  name: РБК
+- d: meduza.io
+  flag: 🇱🇻
+  name: Медуза
+- d: novayagazeta.eu
+  flag: 🇱🇻
+  name: Новая газета
+- d: currenttime.tv
+  flag: 🇺🇸
+  name: Настоящее время
+- d: theins.ru
+  flag: 🇱🇻
+  name: The Insider
+- d: holod.media
+  flag: 🇱🇻
+  name: Холод
+- d: verstka.media
+  flag: 🇱🇻
+  name: Вёрстка
+- d: mediazona.ca
+  flag: 🇨🇦
+  name: Медиазона
+- d: ovd.news
+  flag: 🇱🇻
+  name: ОВД-Инфо
+- d: google.com
+  flag: 🇺🇸
+  name: Google
+- d: yandex.ru
+  flag: 🇷🇺
+  name: Яндекс
+- d: bing.com
+  flag: 🇺🇸
+  name: Bing
+- d: duckduckgo.com
+  flag: 🇺🇸
+  name: DuckDuckGo
+- d: yahoo.com
+  flag: 🇺🇸
+  name: Yahoo
+- d: baidu.com
+  flag: 🇨🇳
+  name: Baidu
+- d: ecosia.org
+  flag: 🇩🇪
+  name: Ecosia
+- d: thepiratebay.org
+  flag: 🏴‍☠️
+  name: The Pirate Bay
+- d: rutracker.org
+  flag: 🇷🇺
+  name: RuTracker
+- d: rutor.info
+  flag: 🇷🇺
+  name: Rutor
+- d: nnmclub.to
+  flag: 🇷🇺
+  name: NNM-Club
+- d: rarbg.to
+  flag: 🏴‍☠️
+  name: RARBG
+- d: kinozal.tv
+  flag: 🇷🇺
+  name: Кинозал
+
+- d: signal.org
+  flag: 🇺🇸
+  name: Signal
+- d: web.whatsapp.com
+  flag: 🇺🇸
+  name: WhatsApp Web
+- d: pps.whatsapp.net
+  flag: 🇺🇸
+  name: WhatsApp Media
+- d: core.telegram.org
+  flag: 🇬🇧
+  name: Telegram API
+- d: web.telegram.org
+  flag: 🇬🇧
+  name: Telegram Web
+- d: viber.com
+  flag: 🇯🇵
+  name: Viber
+- d: web.wechat.com
+  flag: 🇨🇳
+  name: WeChat Web
+- d: wx.qq.com
+  flag: 🇨🇳
+  name: WeChat API
+- d: talk.kakao.com
+  flag: 🇰🇷
+  name: KakaoTalk
+- d: bip.com
+  flag: 🇹🇷
+  name: BiP
+- d: discord.com
+  flag: 🇺🇸
+  name: Discord
+- d: gateway.discord.gg
+  flag: 🇺🇸
+  name: Discord Gateway
+- d: express.ms
+  flag: 🇷🇺
+  name: eXpress
+- d: jami.net
+  flag: CA
+  name: Jami
+- d: delta.chat
+  flag: NL
+  name: Delta Chat
+- d: keet.io
+  flag: CA
+  name: Keet
+- d: imo.im
+  flag: 🇺🇸
+  name: imo
+- d: simplex.chat
+  flag: 🇺🇸
+  name: SimpleX
+- d: getsession.org
+  flag: CA
+  name: Session
+
+- d: torproject.org
+  flag: 🌐
+  name: Tor Project
+- d: proton.me
+  flag: 🇨🇭
+  name: Proton
+- d: mullvad.net
+  flag: 🇸🇪
+  name: Mullvad
+- d: nordvpn.com
+  flag: 🇱🇹
+  name: NordVPN
+- d: wireguard.com
+  flag: 🌐
+  name: WireGuard
+- d: amnezia.org
+  flag: FR
+  name: Amnezia VPN
+- d: durevpn.com
+  flag: CA
+  name: Durev VPN  
+
+- d: aws.amazon.com
+  flag: 🇺🇸
+  name: AWS
+- d: cloud.google.com
+  flag: 🇺🇸
+  name: Google Cloud
+- d: azure.microsoft.com
+  flag: 🇺🇸
+  name: Azure
+- d: vultr.com
+  flag: 🇺🇸
+  name: Vultr
+- d: hetzner.com
+  flag: 🇩🇪
+  name: Hetzner
+- d: ovh.com
+  flag: 🇫🇷
+  name: OVH
+- d: digitalocean.com
+  flag: 🇺🇸
+  name: DigitalOcean
+- d: linode.com
+  flag: 🇺🇸
+  name: Linode
+- d: namecheap.com
+  flag: 🇺🇸
+  name: Namecheap
+- d: cloudflare.com
+  flag: 🇺🇸
+  name: Cloudflare
+- d: godaddy.com
+  flag: 🇺🇸
+  name: GoDaddy
+- d: reg.ru
+  flag: 🇷🇺
+  name: REG.RU
+- d: selectel.ru
+  flag: 🇷🇺
+  name: Selectel
+- d: timeweb.com
+  flag: 🇷🇺
+  name: Timeweb
+- d: news.ycombinator.com
+  flag: 🇺🇸
+  name: Hacker News
+- d: habr.com
+  flag: 🇷🇺
+  name: Хабр
+- d: stackoverflow.com
+  flag: 🇺🇸
+  name: Stack Overflow
+- d: github.com
+  flag: 🇺🇸
+  name: GitHub
+- d: gitlab.com
+  flag: 🇺🇸
+  name: GitLab
+- d: dev.to
+  flag: 🇺🇸
+  name: DEV
+- d: medium.com
+  flag: 🇺🇸
+  name: Medium
+- d: arxiv.org
+  flag: 🇺🇸
+  name: arXiv
+- d: opennet.ru
+  flag: 🇷🇺
+  name: OpenNET
+- d: 3dnews.ru
+  flag: 🇷🇺
+  name: 3DNews
+- d: onliner.by
+  flag: 🇧🇾
+  name: Onliner
+- d: zerkalo.io
+  flag: 🇧🇾
+  name: Зеркало
+- d: spring96.org
+  flag: 🇧🇾
+  name: Вясна
+- d: belta.by
+  flag: 🇧🇾
+  name: БелТА
+- d: sb.by
+  flag: 🇧🇾
+  name: СБ Беларусь
+- d: naviny.by
+  flag: 🇧🇾
+  name: Naviny
+- d: belsat.eu
+  flag: 🇧🇾
+  name: Белсат
+- d: nashaniva.by
+  flag: 🇧🇾
+  name: Наша Ніва
+- d: reform.news
+  flag: 🇧🇾
+  name: Reform.news
+- d: sputnik.by
+  flag: 🇧🇾
+  name: Sputnik
+- d: belnovosti.by
+  flag: 🇧🇾
+  name: Белновости
+ 
+  flag: DK
+  name: DistroWatch
+- d: archive.ubuntu.com
+  flag: 🇬🇧
+  name: Ubuntu
+- d: dl.fedoraproject.org
+  flag: 🇺🇸
+  name: Fedora
+- d: deb.debian.org
+  flag: 🇺🇸
+  name: Debian
+- d: archlinux.org
+  flag: 🇺🇸
+  name: Arch Linux
+- d: download.opensuse.org
+  flag: 🇩🇪
+  name: openSUSE
+- d: cachyos.org
+  flag: CA
+  name: CachyOS
+- d: linuxmint.com
+  flag: 🇺🇸
+  name: Linux Mint
+- d: bazzite.gg
+  flag: CA
+  name: bazzite
+- d: nobaraproject.org
+  flag: CA
+  name: Nobara Linux
+- d: zorin.com
+  flag: 🇺🇸
+  name: Zorin OS
+- d: redos.red-soft.ru
+  flag: 🇷🇺
+  name: РЕД ОС
+- d: www.basealt.ru
+  flag: 🇷🇺
+  name: ALT Linux
+- d: astralinux.ru
+  flag: 🇷🇺
+  name: Astra Linux
+
+- d: www.microsoft.com
+  flag: 🇺🇸
+  name: Microsoft
+- d: download.microsoft.com
+  flag: 🇺🇸
+  name: MS Downloads
+- d: huggingface.co
+  flag: 🇺🇸
+  name: HuggingFace
+- d: kaggle.com
+  flag: 🇺🇸
+  name: Kaggle
+- d: pypi.org
+  flag: 🇺🇸
+  name: PyPI
+- d: npmjs.com
+  flag: 🇺🇸
+  name: npm
+- d: hub.docker.com
+  flag: 🇺🇸
+  name: Docker Hub
+- d: repo.anaconda.com
+  flag: 🇺🇸
+  name: Anaconda
+- d: crates.io
+  flag: 🇺🇸
+  name: crates.io
+- d: registry.terraform.io
+  flag: 🇺🇸
+  name: Terraform
+- d: icloud.com
+  flag: 🇺🇸
+  name: iCloud
+- d: appleid.apple.com
+  flag: 🇺🇸
+  name: Apple ID
+- d: music.apple.com
+  flag: 🇺🇸
+  name: Apple Music
+- d: tv.apple.com
+  flag: 🇺🇸
+  name: Apple TV+
+- d: albert.apple.com
+  flag: 🇺🇸
+  name: Activation
+- d: mesu.apple.com
+  flag: 🇺🇸
+  name: SW Updates
+- d: api.apple-cloudkit.com
+  flag: 🇺🇸
+  name: CloudKit
+- d: akamai.com
+  flag: 🌐
+  name: Akamai CDN
+- d: dropbox.com
+  flag: 🇺🇸
+  name: Dropbox
+- d: drive.google.com
+  flag: 🇺🇸
+  name: Google Drive
+- d: photos.google.com
+  flag: 🇺🇸
+  name: Google Photos
+- d: onedrive.live.com
+  flag: 🇺🇸
+  name: OneDrive
+- d: mega.nz
+  flag: 🇳🇿
+  name: MEGA
+- d: box.com
+  flag: 🇺🇸
+  name: Box
+- d: pcloud.com
+  flag: 🇨🇭
+  name: pCloud
+- d: cloud.huawei.com
+  flag: 🇨🇳
+  name: Huawei Cloud
+- d: sync.com
+  flag: 🇨🇦
+  name: Sync.com
+  
+- d: www.tbank.ru
+  flag: 🇷🇺
+  name: Т-Банк
+- d: sberbank.ru
+  flag: 🇷🇺
+  name: Сбербанк
+- d: alfabank.ru
+  flag: 🇷🇺
+  name: Альфа-Банк
+- d: raiffeisen.ru
+  flag: 🇷🇺
+  name: Райффайзен
+- d: vtb.ru
+  flag: 🇷🇺
+  name: ВТБ
+- d: www.bspb.ru
+  flag: 🇷🇺
+  name: БСПБ
+  
+- d: chase.com
+  flag: 🇺🇸
+  name: Chase
+- d: bankofamerica.com
+  flag: 🇺🇸
+  name: Bank of America
+- d: wellsfargo.com
+  flag: 🇺🇸
+  name: Wells Fargo
+- d: www.hsbc.com
+  flag: 🇬🇧
+  name: HSBC
+- d: barclays.co.uk
+  flag: 🇬🇧
+  name: Barclays
+- d: lloydsbank.com
+  flag: 🇬🇧
+  name: Lloyds
+- d: natwest.com
+  flag: 🇬🇧
+  name: NatWest
+- d: intesasanpaolo.com
+  flag: 🇮🇹
+  name: Intesa Sanpaolo
+- d: unicredit.it
+  flag: 🇮🇹
+  name: UniCredit
+- d: www.unicreditbank.ru
+  flag: 🇷🇺
+  name: UniCredit Russia
+- d: santander.com
+  flag: 🇪🇸
+  name: Santander
+- d: bbva.com
+  flag: 🇪🇸
+  name: BBVA
+- d: www.mizuhobank.co.jp
+  flag: 🇯🇵
+  name: Mizuho
+- d: www.smbc.co.jp
+  flag: 🇯🇵
+  name: SMBC

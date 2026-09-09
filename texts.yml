@@ -1,0 +1,31 @@
+texts:
+  en:
+    results: Results
+    search: Search...
+    start_check: Start Check
+    starting_check: Starting the checkup…
+    stats: Statistics
+    title: Site Availability Checker
+    check_ip: Check IP
+    ip_failed: Can't check IP address
+    checked: Checked
+    check_finish: The checks have been completed!
+    all_sites: All the sites
+    ru_sites: .ru sites
+    not_ru_sites: Not .ru sites
+    last_checks: LAST CHECKS
+  ru:
+    results: Результаты
+    search: Поиск...
+    start_check: Запустить проверку
+    starting_check: Начинаем проверку...
+    stats: Статистика
+    title: Проверка доступности сайтов
+    check_ip: Проверить IP
+    ip_failed: Не удалось определить IP-адреc
+    checked: Проверено
+    check_finish: Проверка завершена!
+    all_sites: Все сайты
+    ru_sites: Cайты .ru
+    not_ru_sites: Зарубежные сайты
+    last_checks: ПОСЛЕДНИЕ ПРОВЕРКИ
